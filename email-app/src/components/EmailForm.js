@@ -1,5 +1,15 @@
+// src/components/EmailForm.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
+
+// src/components/EmailForm.js
+
+// ... (other imports and code)
+
+// src/components/EmailForm.js
+
+// ... (other imports and code)
 
 function EmailForm() {
   const [formData, setFormData] = useState({
@@ -8,7 +18,8 @@ function EmailForm() {
     lastName: '',
     subject: '',
   });
-  
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -16,21 +27,26 @@ function EmailForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    setLoading(true);
+
     try {
-        const response = await axios.post('/send-email', formData); // Make a POST request to your backend
-        console.log(response.data); // Log the response from the server
-        // You can display a success message to the user here
-      } catch (error) {
-        console.error('Error sending email:', error);
-        // Handle and display an error message to the user if needed
-      }
+      const response = await axios.post('/send-email', formData);
+      console.log(response.data);
+      // You can display a success message to the user here
+    } catch (error) {
+      console.error('Error sending email:', error);
+      // Handle and display an error message to the user if needed
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div>
+    <div className="email-form">
       <h2>Email Form</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="input-container">
           <label>Email:</label>
           <input
             type="email"
@@ -39,7 +55,7 @@ function EmailForm() {
             onChange={handleChange}
           />
         </div>
-        <div>
+        <div className="input-container">
           <label>First Name:</label>
           <input
             type="text"
@@ -48,7 +64,7 @@ function EmailForm() {
             onChange={handleChange}
           />
         </div>
-        <div>
+        <div className="input-container">
           <label>Last Name:</label>
           <input
             type="text"
@@ -57,7 +73,7 @@ function EmailForm() {
             onChange={handleChange}
           />
         </div>
-        <div>
+        <div className="input-container">
           <label>Subject:</label>
           <textarea
             name="subject"
@@ -65,7 +81,13 @@ function EmailForm() {
             onChange={handleChange}
           ></textarea>
         </div>
-        <button type="submit">Send Email</button>
+        <button type="submit">
+          {loading ? (
+            <div className="loading-spinner"></div>
+          ) : (
+            'Send Email'
+          )}
+        </button>
       </form>
     </div>
   );
