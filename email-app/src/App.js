@@ -5,7 +5,7 @@ import EmailForm from './components/EmailForm';
 function App() {
   return (
     <div className="App">
-      <h1>Send me an Email</h1>
+      <h1>Send me an Email!</h1>
       <EmailForm />
     </div>
   );
